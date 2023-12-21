@@ -8,30 +8,30 @@ class MyComponent extends React.Component {
         age: 32
     }
 
-    // handle sự kiện click chuột
-    handleClick = (event) => {
-
-        // Cập nhật lại state (dùng keyword 'this') => Khi cập nhật lại state thì func render sẽ được call lại làm thay đổi UI
+    // Cập nhật lại state khi onchange trong input
+    handleOnChange = (event) => {
         this.setState({
-            name: 'Ku Bim',
-            age: Math.floor((Math.random() * 100) + 1)
+            name: event.target.value
         })
-        // 'this' ở đây để ám chỉ chúng ta đang thao tác với component nào và muốn làm gì bên trong component
     }
 
-    // handle sự kiện hover chuột
-    handleHover(event) {
-        console.log('>>> Hover click and toa do X:', event.pageX);
+    handleOnSubmit = (event) => {
+        // Ngăn chặn page reload lại
+        event.preventDefault();
+        console.log(this.state);
     }
 
     render() {
         return (
             <div>
                 My name is {this.state.name} and I'm {this.state.age} year old
-
-                <button onMouseOver={this.handleHover}>Hover me</button>
-
-                <button onClick={(event) => { this.handleClick(event) }}>Click me</button>
+                <form onSubmit={(event) => this.handleOnSubmit(event)}>
+                    <input
+                        type="text"
+                        onChange={(event) => { this.handleOnChange(event) }}
+                    ></input>
+                    <button>submit</button>
+                </form>
             </div>
 
         )
