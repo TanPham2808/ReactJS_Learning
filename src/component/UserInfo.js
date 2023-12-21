@@ -26,7 +26,7 @@ class UserInfo extends React.Component {
             <div>
                 My name is {this.state.name} and I'm {this.state.age} year old
                 <form onSubmit={(event) => this.handleOnSubmit(event)}>
-                    <input
+                    Your name <input
                         type="text"
                         onChange={(event) => { this.handleOnChange(event) }}
                     ></input>
