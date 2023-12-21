@@ -4,11 +4,18 @@ class DisplayInfo extends React.Component {
 
     render() {
         // Sử dụng Destructuring 
-        const { name, age } = this.props; // object
+        const { listUser } = this.props; // object
         return (
             <div>
-                <div>My name's {name}</div>
-                <div>My age's {age}</div>
+                {listUser.map((user) => {
+                    return (
+                        <div key={user.id}>
+                            <div>My name's {user.name}</div>
+                            <div>My age's {user.age}</div>
+                            <hr />
+                        </div>
+                    )
+                })}
             </div>
         )
     }
