@@ -1,5 +1,5 @@
 import React from "react";
-import UserInfo from "./UserInfo";
+import AddUser from "./AddUser";
 import DisplayInfo from "./DisplayInfo";
 
 class MyComponent extends React.Component {
@@ -13,14 +13,23 @@ class MyComponent extends React.Component {
         ]
     }
 
+    handAddNewUser = (userObject) => {
+        this.setState({
+            listUser: [userObject, ...this.state.listUser] // Cập nhật vào đầu mảng
+        })
+    }
+
     render() {
         return (
             <div>
-                <UserInfo />
+                {/* Truyền function từ cha xuống con thông qua props handAddNewUser */}
+                {/* Đang tham chiếu tới func nên KHÔNG DÙNG DẤU (). Nếu dùng () thì thực thi sử dụng func luôn */}
+                <AddUser handAddNewUser={this.handAddNewUser} />
+
                 <br /><br />
+
                 <DisplayInfo
                     listUser={this.state.listUser}
-                    user={this.state.listUser}
                 />
             </div>
         )
