@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './DisplayInfo.scss';
 
 
@@ -11,6 +11,12 @@ const DisplayInfo = (props) => {
     const handleShowHideListUser = () => {
         setShowHideListUser(!isShowHideListUser);
     }
+
+    useEffect(() => {
+        if (listUser.length === 0) {
+            alert('Delete all user');
+        }
+    }, [listUser]); // Nếu ko truyền vào [] thì chỉ chạy duy nhất 1 lần
 
     return (
         <div className="display-info-container">
