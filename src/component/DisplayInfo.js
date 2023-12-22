@@ -3,8 +3,16 @@ import './DisplayInfo.scss';
 
 class DisplayInfo extends React.Component {
 
-    state = {
-        isShowListUser: true
+    // Cách viết chuẩn đối với Class
+    constructor(props) {
+
+        // Component con sẽ nhận đầy đủ props của thằng cha truyền xuống
+        super(props);
+
+        // Khởi tạo state cho 1 component
+        this.state = {
+            isShowListUser: true
+        }
     }
 
     handleShowHide = () => {
