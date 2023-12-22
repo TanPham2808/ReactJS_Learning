@@ -1,4 +1,5 @@
 import React from "react";
+import './DisplayInfo.scss';
 
 class DisplayInfo extends React.Component {
 
@@ -16,7 +17,8 @@ class DisplayInfo extends React.Component {
         // Sử dụng Destructuring 
         const { listUser } = this.props; // object
         return (
-            <div>
+            // Nên có 1 class cha bọc ngoài để viết scss cho dễ
+            <div className="display-info-container">
                 <div>
                     <span onClick={() => { this.handleShowHide() }}>{this.state.isShowListUser ? "Hide list user" : "Show list user"} </span>
                 </div>
