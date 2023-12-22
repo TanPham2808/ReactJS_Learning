@@ -1,50 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import AddUser from "./AddUser";
 import DisplayInfo from "./DisplayInfo";
 
-class MyComponent extends React.Component {
 
-    state = {
-        listUser: [
+const MyComponent = () => {
+    const [listUser, setListUser] = useState(
+        [
             { id: 1, name: 'Ku Bim', age: 28 },
             { id: 2, name: 'Xuân Tân', age: 14 },
             { id: 3, name: 'Xí Muội', age: 17 },
             { id: 4, name: 'Bánh Tét', age: 31 }
         ]
+    )
+
+    const handleAddNewUser = (userObject) => {
+        setListUser([userObject, ...listUser]);
     }
 
-    handAddNewUser = (userObject) => {
-        this.setState({
-            listUser: [userObject, ...this.state.listUser] // Cập nhật vào đầu mảng
-        })
-    }
-
-    handleDeleteUser = (userId) => {
-        let lstUserClone = [...this.state.listUser];
+    const handleDeleteUser = (userId) => {
+        let lstUserClone = listUser;
         lstUserClone = lstUserClone.filter(item => item.id !== userId);
-        this.setState({
-            listUser: lstUserClone
-        })
+        setListUser(lstUserClone);
     }
 
-    render() {
-        return (
-            <>
-                <div className="a">
-                    {/* Truyền function từ cha xuống con thông qua props handAddNewUser */}
-                    {/* Đang tham chiếu tới func nên KHÔNG DÙNG DẤU (). Nếu dùng () thì thực thi sử dụng func luôn */}
-                    <AddUser handAddNewUser={this.handAddNewUser} />
-                </div>
-                <br /><br />
-                <div className="b">
-                    <DisplayInfo
-                        listUser={this.state.listUser}
-                        handleDeleteUser={this.handleDeleteUser}
-                    />
-                </div>
-            </>
-        )
-    }
+    return (
+        <>
+            <div className="a">
+                <AddUser handAddNewUser={handleAddNewUser} />
+            </div>
+            <br /><br />
+            <div className="b">
+                <DisplayInfo
+                    listUser={listUser}
+                    handleDeleteUser={handleDeleteUser}
+                />
+            </div>
+        </>
+    )
 }
+
 export default MyComponent;
 

@@ -1,57 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 
-class AddUser extends React.Component {
+const AddUser = (props) => {
+    // Từ thằng cha truyền vào
+    const { handAddNewUser } = props;
 
-    state = {
-        name: 'XTan',
-        address: 'HCM',
-        age: 32
-    }
+    const [name, setName] = useState();
+    const [age, setAge] = useState();
 
-    // Cập nhật lại state khi onchange trong input
-    handleOnChangeName = (event) => {
-        this.setState({
-            name: event.target.value
-        })
-    }
-
-    handleOnChangeAge = (event) => {
-        this.setState({
-            age: event.target.value
-        })
-    }
-
-    handleOnSubmit = (event) => {
-
+    const handleOnSubmit = (event) => {
         // Ngăn chặn page reload lại
         event.preventDefault();
 
-        // Lấy trong props ra và gọi ngược lên thằng cha
-        this.props.handAddNewUser({
+        // Trả data ra cho thằng cha    
+        handAddNewUser({
             id: Math.floor((Math.random() * 100) + 1),
-            name: this.state.name,
-            age: this.state.age
-        });
+            name: name,
+            age: age
+        })
     }
 
-    render() {
-        return (
-            <div>
-                My name is {this.state.name} and I'm {this.state.age} year old
-                <form onSubmit={(event) => this.handleOnSubmit(event)}>
-                    Your name: <input
-                        type="text"
-                        onChange={(event) => { this.handleOnChangeName(event) }}
-                    ></input>
-                    Your age : <input
-                        type="text"
-                        onChange={(event) => { this.handleOnChangeAge(event) }}
-                    ></input>
-                    <button>submit</button>
-                </form>
-            </div>
-        )
+    const handleOnChangeName = (event) => {
+        setName(event.target.value);
     }
+
+    const handleOnChangeAge = (event) => {
+        setAge(event.target.value);
+    }
+
+    return (
+        <div>
+            <div>My name is {name} and I'm {age} year old</div>
+            <form onSubmit={(event) => handleOnSubmit(event)}>
+                Your name: <input
+                    type="text"
+                    onChange={(event) => handleOnChangeName(event)}
+                ></input>
+                Your age : <input
+                    type="text"
+                    onChange={(event) => handleOnChangeAge(event)}
+                ></input>
+                <button>submit</button>
+            </form>
+        </div>
+    )
 }
 
 export default AddUser;
