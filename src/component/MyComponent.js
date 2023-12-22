@@ -21,17 +21,19 @@ class MyComponent extends React.Component {
 
     render() {
         return (
-            <div>
-                {/* Truyền function từ cha xuống con thông qua props handAddNewUser */}
-                {/* Đang tham chiếu tới func nên KHÔNG DÙNG DẤU (). Nếu dùng () thì thực thi sử dụng func luôn */}
-                <AddUser handAddNewUser={this.handAddNewUser} />
-
+            <>
+                <div className="a">
+                    {/* Truyền function từ cha xuống con thông qua props handAddNewUser */}
+                    {/* Đang tham chiếu tới func nên KHÔNG DÙNG DẤU (). Nếu dùng () thì thực thi sử dụng func luôn */}
+                    <AddUser handAddNewUser={this.handAddNewUser} />
+                </div>
                 <br /><br />
-
-                <DisplayInfo
-                    listUser={this.state.listUser}
-                />
-            </div>
+                <div className="b">
+                    <DisplayInfo
+                        listUser={this.state.listUser}
+                    />
+                </div>
+            </>
         )
     }
 }
