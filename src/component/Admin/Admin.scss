@@ -1,0 +1,10 @@
+.admin-container{
+    display: flex; // Xếp những thằng con thành hàng ngang
+    .admin-sidebar{
+        .ps-menu-root{
+            &.css-vj11vy{
+                height: 100vh !important;
+            }
+        } 
+    }
+}
