@@ -2,6 +2,7 @@ import ModalCreateUser from "./ModalCreateUser";
 import { CgAdd } from "react-icons/cg";
 import './ManageUser.scss'
 import { useState } from "react";
+import TableUser from "./TableUser";
 
 const ManageUser = (props) => {
 
@@ -19,7 +20,8 @@ const ManageUser = (props) => {
                     </button>
                 </div>
                 <div>
-                    table users
+                    <TableUser />
+
                 </div>
                 <ModalCreateUser
                     show={showModalCreateUser}
