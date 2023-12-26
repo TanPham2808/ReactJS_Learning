@@ -58,6 +58,9 @@ const ModalCreateUser = (props) => {
         if (data && data.EC === 0) {
             toast.success(data.EM);
             handleClose();
+
+            // Gọi lại func này ở thằng cha để call lại API get lại data
+            await props.fetchListUser();
         }
 
         if (data && data.EC !== 0) {

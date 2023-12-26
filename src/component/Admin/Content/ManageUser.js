@@ -1,12 +1,25 @@
 import ModalCreateUser from "./ModalCreateUser";
 import { CgAdd } from "react-icons/cg";
 import './ManageUser.scss'
-import { useState } from "react";
 import TableUser from "./TableUser";
+import { useEffect, useState } from "react";
+import { getAllUsers } from '../../../services/ApiServices'
 
 const ManageUser = (props) => {
 
     const [showModalCreateUser, setShowModalCreateUser] = useState(false);
+    const [listUser, setListUser] = useState([]);
+
+    useEffect(() => {
+        fetchListUser();
+    }, []);
+
+    const fetchListUser = async () => {
+        let res = await getAllUsers();
+        if (res.EC === 0) {
+            setListUser(res.DT);
+        }
+    }
 
     return (
         <div className="manage-user-container">
@@ -20,12 +33,12 @@ const ManageUser = (props) => {
                     </button>
                 </div>
                 <div>
-                    <TableUser />
-
+                    <TableUser listUser={listUser} />
                 </div>
                 <ModalCreateUser
                     show={showModalCreateUser}
                     setShow={setShowModalCreateUser}
+                    fetchListUser={fetchListUser}
                 />
             </div>
 
