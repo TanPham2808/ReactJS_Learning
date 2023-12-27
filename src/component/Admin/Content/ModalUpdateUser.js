@@ -141,7 +141,7 @@ const ModalUpdateUser = (props) => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleSubmitUpdateUser()}>
+                    <Button variant="primary" onClick={() => { handleSubmitUpdateUser() }}>
                         Save
                     </Button>
                 </Modal.Footer>

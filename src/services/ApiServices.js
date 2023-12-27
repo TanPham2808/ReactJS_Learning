@@ -21,10 +21,14 @@ const putUpdateUser = (id, username, role, image) => {
     return axios.put('api/v1/participant', data);
 }
 
+const deleteUser = (userId) => {
+    return axios.delete('api/v1/participant', { data: { id: userId } });
+}
+
 
 const getAllUsers = () => {
     return axios.get('api/v1/participant/all');
 }
 
 // Trả ra nhiều biến thì dùng cách export này
-export { postCreateNewUser, getAllUsers, putUpdateUser }
+export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser }
