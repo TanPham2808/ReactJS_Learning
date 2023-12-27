@@ -9,6 +9,7 @@ import ManageUser from './component/Admin/Content/ManageUser';
 import DashBoard from './component/Admin/Content/DashBoard';
 import Login from './component/Auth/Login';
 import App from './App';
+import Register from "./component/Auth/Register";
 
 const Layout = (props) => {
     return (
@@ -25,6 +26,7 @@ const Layout = (props) => {
                 </Route>
 
                 <Route path="/login" element={<Login />} />
+                <Route path="/register-user" element={<Register />} />
             </Routes>
 
             <ToastContainer
