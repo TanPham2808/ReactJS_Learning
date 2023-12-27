@@ -13,6 +13,7 @@ import Admin from './component/Admin/Admin';
 import HomePage from './component/Home/HomePage';
 import ManageUser from './component/Admin/Content/ManageUser';
 import DashBoard from './component/Admin/Content/DashBoard';
+import Login from './component/Auth/Login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -25,10 +26,13 @@ root.render(
           <Route index element={<HomePage />} />
           <Route path="users" element={<User />} />
         </Route>
+
         <Route path="/admins" element={<Admin />} >
           <Route index element={<DashBoard />} />
           <Route path="manage-users" element={<ManageUser />} />
         </Route>
+
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
     {/* </React.StrictMode> */}
