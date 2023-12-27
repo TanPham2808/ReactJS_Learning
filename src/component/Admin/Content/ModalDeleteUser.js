@@ -16,7 +16,10 @@ const ModalDeleteUser = (props) => {
             handleClose();
 
             // Gọi lại func này ở thằng cha để call lại API get lại data
-            await props.fetchListUser();
+            // await props.fetchListUser();
+
+            props.setCurrentPage(1);
+            await props.fetchListUserWithPaginate(1);
         }
 
         if (data && data.EC !== 0) {

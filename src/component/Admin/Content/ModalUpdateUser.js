@@ -56,7 +56,8 @@ const ModalUpdateUser = (props) => {
             handleClose();
 
             // Gọi lại func này ở thằng cha để call lại API get lại data
-            await props.fetchListUser();
+            // await props.fetchListUser();
+            await props.fetchListUserWithPaginate(props.currentPage);
         }
 
         if (data && data.EC !== 0) {
