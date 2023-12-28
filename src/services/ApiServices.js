@@ -38,5 +38,14 @@ const postLogin = (email, password) => {
     return axios.post(`api/v1/login`, { email: email, password: password });
 }
 
+const registerUser = (email, password, username) => {
+    const data = new FormData();
+    data.append('email', email);
+    data.append('password', password);
+    data.append('username', username);
+
+    return axios.post('api/v1/register', data);
+}
+
 // Trả ra nhiều biến thì dùng cách export này
-export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser, getUserWithPaginate, postLogin }
+export { postCreateNewUser, getAllUsers, putUpdateUser, deleteUser, getUserWithPaginate, postLogin, registerUser }

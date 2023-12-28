@@ -1,8 +1,10 @@
 
 import imageRegister from '../../assets/register-image.jpg';
 import { useNavigate } from "react-router-dom";
-import './style.scss';
+import './Register.scss';
 import { useState } from 'react';
+import { registerUser } from '../../services/ApiServices';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [userName, setUserName] = useState();
@@ -11,9 +13,19 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    const handleRegister = (event) => {
+    const handleRegister = async (event) => {
         event.preventDefault();
-        alert('clickme');
+
+        // Call API                 
+        let data = await registerUser(email, password, userName);
+        if (data && data.EC === 0) {
+            toast.success(data.EM);
+            navigate("/login");
+        }
+
+        if (data && data.EC !== 0) {
+            toast.error(data.EM);
+        }
     }
 
     return (
@@ -63,7 +75,7 @@ const Register = () => {
                         </div>
                         <div className="signup-image">
                             <figure><img src={imageRegister} alt="sing up image" /></figure>
-                            <span className="signup-image-link" onClick={() => navigate("/")}>&#60;&#60; Go to Homepage</span>
+                            <span className="signup-image-link" style={{ cursor: 'pointer' }} onClick={() => navigate("/")}>&#60;&#60; Go to Homepage</span>
                         </div>
                     </div>
                 </div>
