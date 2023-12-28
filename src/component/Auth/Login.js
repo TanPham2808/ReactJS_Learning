@@ -3,17 +3,25 @@ import './Login.scss'
 import { useNavigate } from "react-router-dom";
 import { postLogin } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { doLogin } from '../../redux/action/UserAction';
 
 const Login = (props) => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
         let res = await postLogin(email, password);
         if (res && res.EC === 0) {
-            navigate("/admins");
+
+            // Khai báo action (action là 1 object)
+            dispatch(doLogin(res));
+
+            // Điều hướng 
+            navigate("/");
         }
         else {
             toast.error(res.EM);
