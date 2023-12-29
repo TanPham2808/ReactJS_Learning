@@ -5,6 +5,7 @@ import { postLogin } from '../../services/ApiServices';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { doLogin } from '../../redux/action/UserAction';
+import { ImSpinner } from "react-icons/im";
 
 const Login = (props) => {
     const [email, setEmail] = useState();
@@ -13,18 +14,29 @@ const Login = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const [isloading, setIsLoading] = useState(false);
+
     const handleLogin = async () => {
-        let res = await postLogin(email, password);
+
+        // set biến trước khi gọi API
+        setIsLoading(true);
+
+        let res = await postLogin(email, password, 2000);
+
         if (res && res.EC === 0) {
 
             // Khai báo action (action là 1 object)
             dispatch(doLogin(res));
+
+            // Set lại biến để tắt loading sau khi gọi API thành công
+            setIsLoading(false);
 
             // Điều hướng 
             navigate("/");
         }
         else {
             toast.error(res.EM);
+            setIsLoading(false);
         }
     }
 
@@ -62,7 +74,15 @@ const Login = (props) => {
                 </div>
                 <span className='forgot-password'>Forgot password ?</span>
                 <div>
-                    <button className='btn-submit' onClick={() => handleLogin()} >Login to TanPham</button>
+                    <button
+                        className='btn-submit'
+                        onClick={() => handleLogin()}
+                        disabled={isloading}
+                    >
+                        {isloading && <ImSpinner className='loader-icon' />}
+                        <span>Login to TanPham</span>
+
+                    </button>
                 </div>
                 <div className='text-center'>
                     <span className='back' onClick={() => navigate("/")}>&#60;&#60; Go to Homepage</span>
