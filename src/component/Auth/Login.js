@@ -21,7 +21,7 @@ const Login = (props) => {
         // set biến trước khi gọi API
         setIsLoading(true);
 
-        let res = await postLogin(email, password, 2000);
+        let res = await postLogin(email, password, 3000);
 
         if (res && res.EC === 0) {
 

@@ -1,4 +1,11 @@
 import axios from 'axios';
+import NProgress from 'nprogress'
+
+// Set config cho thanh loadingBar
+NProgress.configure({
+    showSpinner: false,
+    trickleSpeed: 100,
+})
 
 const instance = axios.create({
     baseURL: 'http://172.31.23.175:8081/',
@@ -10,6 +17,7 @@ const instance = axios.create({
 // Customize request trước khi gửi đi
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
+    NProgress.start();
     return config;
 }, function (error) {
     // Do something with request error
@@ -20,6 +28,7 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
+    NProgress.done();
     return response && response.data ? response.data : response;
 }, function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
