@@ -51,8 +51,13 @@ const getQuizByUser = () => {
     return axios.get('api/v1/quiz-by-participant');
 }
 
+const getDataQuiz = (id) => {
+    return axios.get(`api/v1/questions-by-quiz?quizId=${id}`);
+}
+
 // Trả ra nhiều biến thì dùng cách export này
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
-    getUserWithPaginate, postLogin, registerUser, getQuizByUser
+    getUserWithPaginate, postLogin, registerUser, getQuizByUser,
+    getDataQuiz
 }
