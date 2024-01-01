@@ -1,5 +1,6 @@
 import axios from 'axios';
-import NProgress from 'nprogress'
+import NProgress from 'nprogress';
+import { store } from '../redux/store';
 
 // Set config cho thanh loadingBar
 NProgress.configure({
@@ -8,7 +9,8 @@ NProgress.configure({
 })
 
 const instance = axios.create({
-    baseURL: 'http://172.31.23.175:8081/',
+    //baseURL: 'http://172.31.23.175:8081/',
+    baseURL: 'http://localhost:8081/',
 });
 
 //--------- Middleware Request & Reponse ---------//
@@ -17,6 +19,8 @@ const instance = axios.create({
 // Customize request trước khi gửi đi
 instance.interceptors.request.use(function (config) {
     // Do something before request is sent
+    const accessToken = store?.getState()?.user?.account?.access_token;
+    config.headers["Authorization"] = "Bearer " + accessToken;
     NProgress.start();
     return config;
 }, function (error) {
