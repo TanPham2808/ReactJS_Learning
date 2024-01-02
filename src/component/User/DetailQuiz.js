@@ -32,6 +32,8 @@ const DetailQuiz = (props) => {
                             questionDescription = item.description;
                             image = item.image;
                         }
+                        // Thêm trường mới để đánh dấu câu trả lời được check chưa
+                        item.answers.isSelected = false;
                         answers.push(item.answers);
                     })
 
@@ -53,6 +55,32 @@ const DetailQuiz = (props) => {
         }
     }
 
+    const handleCheckBox = (answerId, questionId) => {
+        // Dùng cloneDeep để clone tất cả các object lồng bên trong
+        // Không thao tác trực tiếp trên dataQuiz
+        let dataQuizClone = _.cloneDeep(dataQuiz);
+        let question = dataQuizClone.find(item => +item.questionId === +questionId)
+
+        // Xử lý data khi check trên UI
+        if (question && question.answers) {
+            let arrNew = question.answers.map((answer) => {
+                if (+answer.id === +answerId) {
+                    answer.isSelected = !answer.isSelected; // Phủ định khi check
+                }
+                return answer;
+            })
+            question.answers = arrNew;
+        }
+
+        let index = dataQuizClone.findIndex(item => +item.questionId === +questionId);
+        if (index > -1) {
+            dataQuizClone[index] = question;
+
+            // Update lại data từ dataQuizClone
+            setDataQuiz(dataQuizClone);
+        }
+    }
+
     return (
         <div className="detail-quiz-container">
             <div className='left-content'>
@@ -67,6 +95,7 @@ const DetailQuiz = (props) => {
                     {/* Truyền data và index từ component cha vào component con để render lên giao diện  */}
                     <Question
                         index={index}
+                        handleCheckBox={handleCheckBox}
                         data={dataQuiz && dataQuiz.length > 0
                             ? dataQuiz[index]
                             : []} />
