@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom'; // Hook của thư viện
-import { getDataQuiz } from '../../services/ApiServices'
+import { getDataQuiz, postSubmitQuiz } from '../../services/ApiServices'
 import _ from 'lodash';
 import './DetailQuiz.scss';
 import Question from './Question';
+import ModalResult from './ModalResult';
 
 const DetailQuiz = (props) => {
     // Lấy param trên URL
@@ -14,6 +15,9 @@ const DetailQuiz = (props) => {
 
     const [dataQuiz, setDataQuiz] = useState();
     const [index, setIndex] = useState(0);
+
+    const [isShowModalResult, setIsModalResult] = useState(false);
+    const [dataModalResult, setDataModalResult] = useState({});
 
     useEffect(() => {
         fetchQuestion();
@@ -81,7 +85,7 @@ const DetailQuiz = (props) => {
 
     }
 
-    const handleFinishQuiz = () => {
+    const handleFinishQuiz = async () => {
         // Cần build ra template JSON này 
         // {
         //     "quizId": 1,
@@ -120,6 +124,23 @@ const DetailQuiz = (props) => {
                 })
             })
             payLoad.answers = answers;
+
+            // Submit API
+            let res = await postSubmitQuiz(payLoad);
+            if (res && res.EC === 0) {
+
+                // Đưa data vào ModalResult
+                setDataModalResult({
+                    countCorrect: res.DT.countCorrect,
+                    countTotal: res.DT.countTotal,
+                    quizData: res.DT.quizData
+                })
+
+                // Mở Modal Result
+                setIsModalResult(true);
+            } else {
+                alert('Wrong result')
+            }
         }
     }
 
@@ -151,6 +172,11 @@ const DetailQuiz = (props) => {
             <div className='right-content'>
                 count down
             </div>
+            <ModalResult
+                show={isShowModalResult}
+                setShow={setIsModalResult}
+                dataModalResult={dataModalResult}
+            />
         </div>
     )
 }

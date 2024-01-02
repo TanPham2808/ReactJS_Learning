@@ -55,9 +55,14 @@ const getDataQuiz = (id) => {
     return axios.get(`api/v1/questions-by-quiz?quizId=${id}`);
 }
 
+const postSubmitQuiz = (data) => {
+    // Gửi lên server dạng RAW - JSON
+    return axios.post(`api/v1/quiz-submit`, { ...data });
+}
+
 // Trả ra nhiều biến thì dùng cách export này
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
     getUserWithPaginate, postLogin, registerUser, getQuizByUser,
-    getDataQuiz
+    getDataQuiz, postSubmitQuiz
 }
