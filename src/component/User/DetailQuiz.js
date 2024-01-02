@@ -74,6 +74,7 @@ const DetailQuiz = (props) => {
                 <div className='footer'>
                     <button className='btn btn-secondary' onClick={() => handlePrev()}>Prev</button>
                     <button className='btn btn-primary' onClick={() => handeNext()}>Next</button>
+                    <button className='btn btn-warning'>Finish</button>
                 </div>
             </div>
             <div className='right-content'>
