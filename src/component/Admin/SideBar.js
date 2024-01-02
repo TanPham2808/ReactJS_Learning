@@ -11,7 +11,7 @@ const SideBar = ({ collapsed }) => {
                         <MenuItem component={<Link to="/admins/manage-users" />}>
                             Quản lý Users
                         </MenuItem>
-                        <MenuItem> Quản lý Bài Quiz </MenuItem>
+                        <MenuItem component={<Link to="/admins/manage-quizzes" />}> Quản lý Bài Quiz </MenuItem>
                         <MenuItem> Quản lý Câu Hỏi </MenuItem>
                     </SubMenu>
                     <MenuItem> Documentation </MenuItem>
