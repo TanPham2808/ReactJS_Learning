@@ -8,7 +8,6 @@ const Question = (props) => {
 
     // Gọi ngược lên lại thằng cha
     const handleCheckBox = (event, answerId, questionId) => {
-        console.log(">>> Data check ", answerId, questionId);
         props.handleCheckBox(answerId, questionId)
     }
 

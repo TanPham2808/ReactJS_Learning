@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom'; // Hook của thư viện
 import { getDataQuiz } from '../../services/ApiServices'
-import _, { values } from 'lodash';
+import _ from 'lodash';
 import './DetailQuiz.scss';
 import Question from './Question';
 
@@ -63,13 +63,12 @@ const DetailQuiz = (props) => {
 
         // Xử lý data khi check trên UI
         if (question && question.answers) {
-            let arrNew = question.answers.map((answer) => {
+            question.answers = question.answers.map(answer => {
                 if (+answer.id === +answerId) {
                     answer.isSelected = !answer.isSelected; // Phủ định khi check
                 }
                 return answer;
             })
-            question.answers = arrNew;
         }
 
         let index = dataQuizClone.findIndex(item => +item.questionId === +questionId);
@@ -78,6 +77,49 @@ const DetailQuiz = (props) => {
 
             // Update lại data từ dataQuizClone
             setDataQuiz(dataQuizClone);
+        }
+
+    }
+
+    const handleFinishQuiz = () => {
+        // Cần build ra template JSON này 
+        // {
+        //     "quizId": 1,
+        //     "answers": [
+        //         { 
+        //             "questionId": 1,
+        //             "userAnswerId": [3]
+        //         },
+        //         { 
+        //             "questionId": 2,
+        //             "userAnswerId": [6]
+        //         }
+        //     ]
+        // }
+        let payLoad = {
+            quizId: +quizId,
+            answers: []
+        }
+        let answers = [];
+
+        if (dataQuiz && dataQuiz.length > 0) {
+            dataQuiz.forEach(question => {
+                let questionId = question.questionId;
+                let userAnswerId = [];
+
+                // todo: userAnswerId
+                question.answers.forEach(a => {
+                    if (a.isSelected) {
+                        userAnswerId.push(a.id);
+                    }
+                })
+
+                answers.push({
+                    questionId: +questionId,
+                    userAnswerId: userAnswerId
+                })
+            })
+            payLoad.answers = answers;
         }
     }
 
@@ -103,7 +145,7 @@ const DetailQuiz = (props) => {
                 <div className='footer'>
                     <button className='btn btn-secondary' onClick={() => handlePrev()}>Prev</button>
                     <button className='btn btn-primary' onClick={() => handeNext()}>Next</button>
-                    <button className='btn btn-warning'>Finish</button>
+                    <button className='btn btn-warning' onClick={() => handleFinishQuiz()}>Finish</button>
                 </div>
             </div>
             <div className='right-content'>
