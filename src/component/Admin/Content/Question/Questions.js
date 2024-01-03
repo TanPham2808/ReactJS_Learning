@@ -24,14 +24,14 @@ export default function Questions() {
             {
                 // object câu hỏi
                 id: uuidv4(),
-                description: 'question 1',
+                description: '',
                 imageFile: '',
                 imageName: '',
                 // Bố cục câu trả lời
                 answers: [
                     {
                         id: uuidv4(),
-                        description: 'answer 1',
+                        description: '',
                         isCorrect: false
                     }
                 ]
@@ -99,6 +99,51 @@ export default function Questions() {
         }
     }
 
+    const handleOnChange = (type, questionId, value) => {
+        if (type === 'QUESTION') {
+            let questionClone = _.cloneDeep(questions);
+
+            let index = questionClone.findIndex(question => question.id === questionId);
+            if (index !== -1) {
+                questionClone[index].description = value;
+                setQuestions(questionClone);
+            }
+
+        }
+    }
+
+    const handleOnChangeFileQuestion = (questionId, event) => {
+        let questionClone = _.cloneDeep(questions);
+        let index = questionClone.findIndex(question => question.id === questionId);
+        if (index !== -1 && event.target && event.target.files) {
+            questionClone[index].imageFile = event.target.files[0];
+            questionClone[index].imageName = event.target.files[0].name;
+            setQuestions(questionClone);
+        }
+
+        console.log(questionClone);
+    }
+
+    const handleAnswerQuestion = (type, answerId, questionId, value) => {
+        let questionClone = _.cloneDeep(questions);
+        let index = questionClone.findIndex(question => question.id === questionId);
+        if (index !== -1) {
+            questionClone[index].answers =
+                questionClone[index].answers.map(answer => {
+                    if (answer.id === answerId) {
+                        if (type === 'CHECKBOX') {
+                            answer.isCorrect = value;
+                        }
+                        if (type === 'INPUT') {
+                            answer.description = value
+                        }
+                    }
+                    return answer;
+                })
+            setQuestions(questionClone);
+        }
+    }
+
     return (
         <div className="question-container">
             <div className="title">
@@ -131,14 +176,22 @@ export default function Questions() {
                                             type="text"
                                             className="form-control"
                                             placeholder={question.description}
+                                            onChange={(event) => handleOnChange('QUESTION', question.id, event.target.value)}
                                         />
                                         <label>Question {index + 1} description</label>
                                     </div>
 
                                     <div className='group-upload'>
-                                        <label className='label-upload'><FaImage /></label>
-                                        <input type='file' hidden />
-                                        <span>0 file is upload</span>
+                                        <label htmlFor={`${question.id}`}
+                                            className='label-upload'><FaImage />
+                                        </label>
+                                        <input
+                                            id={`${question.id}`}
+                                            type="file"
+                                            hidden
+                                            onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
+                                        />
+                                        <span>{question.imageName ? question.imageName : '0 file is uploaded'}</span>
                                     </div>
 
                                     <div className='btn-add'>
@@ -150,7 +203,6 @@ export default function Questions() {
                                                 <MdOutlineRemoveCircleOutline className='icon-remove' />
                                             </span>
                                         }
-
                                     </div>
                                 </div>
                                 {
@@ -160,13 +212,17 @@ export default function Questions() {
                                                 <input
                                                     className="form-check-input iscorrect"
                                                     type="checkbox"
-
+                                                    checked={answer.isCorrect}
+                                                    onChange={(e) =>
+                                                        handleAnswerQuestion('CHECKBOX', answer.id, question.id, e.target.checked)}
                                                 />
                                                 <div className="form-floating answer-name">
                                                     <input
                                                         type="text"
                                                         className="form-control"
                                                         placeholder={answer.description}
+                                                        onChange={(e) =>
+                                                            handleAnswerQuestion('INPUT', answer.id, question.id, e.target.value)}
                                                     />
                                                     <label>Answers {index + 1}</label>
                                                 </div>
