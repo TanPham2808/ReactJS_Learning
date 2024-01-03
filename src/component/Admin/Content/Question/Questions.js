@@ -8,6 +8,7 @@ import { LuBadgePlus } from "react-icons/lu";
 import { FaImage } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
+import Lightbox from "react-awesome-lightbox";
 
 export default function Questions() {
 
@@ -148,6 +149,23 @@ export default function Questions() {
         console.log(">>>question: ", questions);
     }
 
+    const [isPreviewImage, setIsPreviewImage] = useState(false);
+    const [dataImagePreview, setDataImagePreview] = useState({
+        title: '',
+        url: ''
+    })
+    const handlePreviewImage = (questionId) => {
+        let questionClone = _.cloneDeep(questions);
+        let index = questionClone.findIndex(question => question.id === questionId);
+        if (index > -1) {
+            setDataImagePreview({
+                url: URL.createObjectURL(questionClone[index].imageFile),
+                title: questionClone[index].imageName
+            })
+            setIsPreviewImage(true);
+        }
+    }
+
     return (
         <div className="question-container">
             <div className="title">
@@ -195,7 +213,14 @@ export default function Questions() {
                                             hidden
                                             onChange={(event) => handleOnChangeFileQuestion(question.id, event)}
                                         />
-                                        <span>{question.imageName ? question.imageName : '0 file is uploaded'}</span>
+                                        <span>{question.imageName ?
+                                            <span
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={() => handlePreviewImage(question.id)}>
+                                                {question.imageName}
+                                            </span>
+                                            :
+                                            '0 file is uploaded'}</span>
                                     </div>
 
                                     <div className='btn-add'>
@@ -244,6 +269,8 @@ export default function Questions() {
                                         )
                                     })
                                 }
+
+
                             </div>
                         )
                     })
@@ -257,8 +284,13 @@ export default function Questions() {
                     </div>
                 }
 
-
-
+                {isPreviewImage &&
+                    <Lightbox
+                        image={dataImagePreview.url}
+                        title={dataImagePreview.title}
+                        onClose={() => setIsPreviewImage(false)}
+                    ></Lightbox>
+                }
             </div>
         </div>
     )
