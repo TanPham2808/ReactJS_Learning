@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import './Questions.scss';
 import { CgAdd } from "react-icons/cg";
@@ -9,16 +9,31 @@ import { FaImage } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
+import { getAllQuizForAdmin } from '../../../../services/ApiServices';
 
 export default function Questions() {
-
-    const options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-    ];
-
+    const [listQuiz, setListQuiz] = useState([]);
     const [selectedQuiz, setSelectedQuiz] = useState({})
+
+    // Call API lấy danh sách
+    const fetchListQuiz = async () => {
+        let res = await getAllQuizForAdmin();
+        if (res && res.EC === 0) {
+            let newQuiz = res.DT.map(item => {
+                // Chuyển lại định dạng của combobox
+                return {
+                    value: item.id,
+                    label: `${item.id} - ${item.description}`
+                }
+            })
+            setListQuiz(newQuiz);
+        }
+    }
+
+    useEffect(() => {
+        fetchListQuiz();
+    }, [])
+
 
     const [questions, setQuestions] = useState(
         [
@@ -146,7 +161,11 @@ export default function Questions() {
     }
 
     const handSubmitQuestionForQuiz = () => {
-        console.log(">>>question: ", questions);
+        console.log(">>>question: ", questions, selectedQuiz);
+
+        // submit question
+
+        // submit answer
     }
 
     const [isPreviewImage, setIsPreviewImage] = useState(false);
@@ -179,7 +198,7 @@ export default function Questions() {
                     <Select
                         defaultValue={selectedQuiz}
                         onChange={setSelectedQuiz}
-                        options={options}
+                        options={listQuiz}
                     />
                 </div>
 
