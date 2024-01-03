@@ -4,6 +4,7 @@ import { getAllQuizForAdmin } from '../../../../services/ApiServices';
 const QuizTable = (props) => {
 
     const [listQuiz, setListQuiz] = useState([]);
+    const { isLoadData, setIsLoadData } = props;
 
     // Call API lấy danh sách
     const fetchListQuiz = async () => {
@@ -15,7 +16,8 @@ const QuizTable = (props) => {
 
     useEffect(() => {
         fetchListQuiz();
-    }, [])
+        setIsLoadData(false);
+    }, [isLoadData])
 
     return (
         <>
