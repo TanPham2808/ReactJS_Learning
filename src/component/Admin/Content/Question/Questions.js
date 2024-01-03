@@ -144,6 +144,10 @@ export default function Questions() {
         }
     }
 
+    const handSubmitQuestionForQuiz = () => {
+        console.log(">>>question: ", questions);
+    }
+
     return (
         <div className="question-container">
             <div className="title">
@@ -243,8 +247,14 @@ export default function Questions() {
                             </div>
                         )
                     })
-
-
+                }
+                {
+                    questions && questions.length > 0 &&
+                    <div>
+                        <button
+                            onClick={() => handSubmitQuestionForQuiz()}
+                            className='btn btn-warning'>Save Question</button>
+                    </div>
                 }
 
 
