@@ -10,8 +10,27 @@ import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
 import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from '../../../../services/ApiServices';
+import { toast } from 'react-toastify';
 
 export default function Questions() {
+    const initQuestion = [
+        {
+            // object câu hỏi
+            id: uuidv4(),
+            description: '',
+            imageFile: '',
+            imageName: '',
+            // Bố cục câu trả lời
+            answers: [
+                {
+                    id: uuidv4(),
+                    description: '',
+                    isCorrect: false
+                }
+            ]
+        }
+    ];
+
     const [listQuiz, setListQuiz] = useState([]);
     const [selectedQuiz, setSelectedQuiz] = useState({})
 
@@ -35,25 +54,7 @@ export default function Questions() {
     }, [])
 
 
-    const [questions, setQuestions] = useState(
-        [
-            {
-                // object câu hỏi
-                id: uuidv4(),
-                description: '',
-                imageFile: '',
-                imageName: '',
-                // Bố cục câu trả lời
-                answers: [
-                    {
-                        id: uuidv4(),
-                        description: '',
-                        isCorrect: false
-                    }
-                ]
-            }
-        ]
-    );
+    const [questions, setQuestions] = useState(initQuestion);
 
     const handleAddRemoveQuestion = (type, id) => {
         if (type === 'ADD') {
@@ -162,7 +163,10 @@ export default function Questions() {
 
     // Submit câu hỏi (call 2 API cùng lúc trong Promise)
     const handSubmitQuestionForQuiz = async (questions) => {
-        console.log(">>>question: ", questions, selectedQuiz.value);
+        if (_.isEmpty(selectedQuiz)) {
+            toast.error("Select quiz, please....");
+            return;
+        }
 
         await Promise.all(questions.map(async (question) => {
             let q = await postCreateNewQuestionForQuiz(
@@ -179,6 +183,9 @@ export default function Questions() {
                 )
             }))
         }));
+
+        toast.success("Create question success");
+        setQuestions(initQuestion);
     }
 
     const [isPreviewImage, setIsPreviewImage] = useState(false);
