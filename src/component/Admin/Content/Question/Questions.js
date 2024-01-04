@@ -9,7 +9,7 @@ import { FaImage } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin } from '../../../../services/ApiServices';
+import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion } from '../../../../services/ApiServices';
 
 export default function Questions() {
     const [listQuiz, setListQuiz] = useState([]);
@@ -160,12 +160,25 @@ export default function Questions() {
         }
     }
 
-    const handSubmitQuestionForQuiz = () => {
-        console.log(">>>question: ", questions, selectedQuiz);
+    // Submit câu hỏi (call 2 API cùng lúc trong Promise)
+    const handSubmitQuestionForQuiz = async (questions) => {
+        console.log(">>>question: ", questions, selectedQuiz.value);
 
-        // submit question
+        await Promise.all(questions.map(async (question) => {
+            let q = await postCreateNewQuestionForQuiz(
+                selectedQuiz.value,
+                question.description,
+                question.imageFile);
 
-        // submit answer
+            await Promise.all(question.answers.map(async (answer) => {
+                console.log(">>>check answer: ", answer);
+                await postCreateNewAnswerForQuestion(
+                    q.DT.id,
+                    answer.description,
+                    answer.isCorrect
+                )
+            }))
+        }));
     }
 
     const [isPreviewImage, setIsPreviewImage] = useState(false);
@@ -298,7 +311,7 @@ export default function Questions() {
                     questions && questions.length > 0 &&
                     <div>
                         <button
-                            onClick={() => handSubmitQuestionForQuiz()}
+                            onClick={() => handSubmitQuestionForQuiz(questions)}
                             className='btn btn-warning'>Save Question</button>
                     </div>
                 }

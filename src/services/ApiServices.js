@@ -73,9 +73,26 @@ const getAllQuizForAdmin = () => {
     return axios.get('api/v1/quiz/all');
 }
 
+const postCreateNewQuestionForQuiz = (quiz_id, description, questionImage) => {
+    const data = new FormData();
+    data.append('quiz_id', quiz_id);
+    data.append('description', description);
+    data.append('questionImage', questionImage);
+    return axios.post('api/v1/question', data);
+}
+
+const postCreateNewAnswerForQuestion = (question_id, description, correct_answer) => {
+    return axios.post('api/v1/answer', {
+        question_id: question_id,
+        description: description,
+        correct_answer: correct_answer
+    });
+}
+
 // Trả ra nhiều biến thì dùng cách export này
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
     getUserWithPaginate, postLogin, registerUser, getQuizByUser,
-    getDataQuiz, postSubmitQuiz, postCreateQuiz, getAllQuizForAdmin
+    getDataQuiz, postSubmitQuiz, postCreateQuiz, getAllQuizForAdmin,
+    postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion
 }
