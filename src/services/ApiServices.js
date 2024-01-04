@@ -89,10 +89,23 @@ const postCreateNewAnswerForQuestion = (question_id, description, correct_answer
     });
 }
 
+const postAssignUser = (quizId, userId) => {
+    return axios.post('api/v1/quiz-assign-to-user', {
+        quizId: quizId,
+        userId: userId
+    });
+}
+
+const getQuizWithQA = (quizId) => {
+    return axios.get(`api/v1/quiz-with-qa/${quizId}`);
+}
+
+
 // Trả ra nhiều biến thì dùng cách export này
 export {
     postCreateNewUser, getAllUsers, putUpdateUser, deleteUser,
     getUserWithPaginate, postLogin, registerUser, getQuizByUser,
     getDataQuiz, postSubmitQuiz, postCreateQuiz, getAllQuizForAdmin,
-    postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion
+    postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion,
+    postAssignUser, getQuizWithQA
 }
