@@ -222,6 +222,8 @@ export default function QuizQA() {
         });
         if (res && res.EC === 0) {
             toast.success(res.EM);
+            // Cập nhật lại state của ID từ DB lấy lên
+            fetchQuizWithQA();
         }
     }
 
