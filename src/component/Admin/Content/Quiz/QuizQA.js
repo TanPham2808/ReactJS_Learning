@@ -9,7 +9,7 @@ import { FaImage } from "react-icons/fa";
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash';
 import Lightbox from "react-awesome-lightbox";
-import { getAllQuizForAdmin, postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion, getQuizWithQA } from '../../../../services/ApiServices';
+import { getAllQuizForAdmin, getQuizWithQA, postUpsertQA } from '../../../../services/ApiServices';
 import { toast } from 'react-toastify';
 
 export default function QuizQA() {
@@ -208,24 +208,29 @@ export default function QuizQA() {
             return;
         }
 
-        await Promise.all(questions.map(async (question) => {
-            let q = await postCreateNewQuestionForQuiz(
-                selectedQuiz.value,
-                question.description,
-                question.imageFile);
+        let questionClone = _.cloneDeep(questions);
+        for (let i = 0; i < questionClone.length; i++) {
+            if (questionClone[i].imageFile) {
+                questionClone[i].imageFile = await toBase64(questionClone[i].imageFile);
+            }
+        }
 
-            await Promise.all(question.answers.map(async (answer) => {
-                await postCreateNewAnswerForQuestion(
-                    q.DT.id,
-                    answer.description,
-                    answer.isCorrect
-                )
-            }))
-        }));
-
-        toast.success("Create question success");
-        setQuestions(initQuestion);
+        // Call API Upsert
+        let res = await postUpsertQA({
+            quizId: selectedQuiz.value,
+            questions: questionClone
+        });
+        if (res && res.EC === 0) {
+            toast.success(res.EM);
+        }
     }
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+    });
 
     const [isPreviewImage, setIsPreviewImage] = useState(false);
     const [dataImagePreview, setDataImagePreview] = useState({

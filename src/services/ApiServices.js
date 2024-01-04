@@ -100,6 +100,10 @@ const getQuizWithQA = (quizId) => {
     return axios.get(`api/v1/quiz-with-qa/${quizId}`);
 }
 
+const postUpsertQA = (data) => {
+    // Gửi lên server dạng RAW - JSON
+    return axios.post(`api/v1/quiz-upsert-qa`, { ...data })
+}
 
 // Trả ra nhiều biến thì dùng cách export này
 export {
@@ -107,5 +111,5 @@ export {
     getUserWithPaginate, postLogin, registerUser, getQuizByUser,
     getDataQuiz, postSubmitQuiz, postCreateQuiz, getAllQuizForAdmin,
     postCreateNewQuestionForQuiz, postCreateNewAnswerForQuestion,
-    postAssignUser, getQuizWithQA
+    postAssignUser, getQuizWithQA, postUpsertQA
 }
