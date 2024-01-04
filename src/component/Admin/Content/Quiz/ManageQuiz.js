@@ -6,6 +6,8 @@ import { postCreateQuiz } from '../../../../services/ApiServices';
 import { toast } from 'react-toastify';
 import QuizTable from './QuizTable';
 import Accordion from 'react-bootstrap/Accordion';
+import QuizQA from './QuizQA';
+import AssignQuiz from './AssignQuiz';
 
 const options = [
     { value: 'EASY', label: 'EASY' },
@@ -98,13 +100,26 @@ const ManageQuiz = (props) => {
                                 </div>
                             </fieldset>
                         </div>
+                        <div className="list-detail">
+                            <QuizTable isLoadData={isLoadData} setIsLoadData={setIsLoadData} />
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>Update Q/A Quiz</Accordion.Header>
+                    <Accordion.Body>
+                        <QuizQA />
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="2">
+                    <Accordion.Header>Assign to Users</Accordion.Header>
+                    <Accordion.Body>
+                        <AssignQuiz />
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
 
-            <div className="list-detail">
-                <QuizTable isLoadData={isLoadData} setIsLoadData={setIsLoadData} />
-            </div>
+
 
         </div>
     )
