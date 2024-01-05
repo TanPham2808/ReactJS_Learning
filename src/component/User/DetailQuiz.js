@@ -41,6 +41,8 @@ const DetailQuiz = (props) => {
                         item.answers.isSelected = false;
                         answers.push(item.answers);
                     })
+                    // Sắp xếp lại câu trả lời (các câu có checkbox)
+                    answers = _.orderBy(answers, ['id'], ['asc']);
 
                     return { questionId: key, answers, questionDescription, image }
                 })
