@@ -2,7 +2,6 @@ import {
     BrowserRouter, Routes, Route
 } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
-import User from './component/User/User';
 import Admin from './component/Admin/Admin';
 import HomePage from './component/Home/HomePage';
 import ManageUser from './component/Admin/Content/ManageUser';
@@ -15,6 +14,7 @@ import DetailQuiz from "./component/User/DetailQuiz";
 import ManageQuiz from "./component/Admin/Content/Quiz/ManageQuiz";
 import Questions from "./component/Admin/Content/Question/Questions";
 import PrivateRoute from "./routes/PrivateRoute";
+import React, { Suspense } from "react";
 
 const NotFound = () => {
     return (
@@ -26,7 +26,7 @@ const NotFound = () => {
 
 const Layout = (props) => {
     return (
-        <>
+        <Suspense fallback={<div>Loading....</div>}>
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<HomePage />} />
@@ -67,7 +67,7 @@ const Layout = (props) => {
                 pauseOnHover
                 theme="light"
             />
-        </>
+        </Suspense>
     )
 }
 
